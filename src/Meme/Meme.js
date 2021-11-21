@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import styles from './styles.module.css'
 
 export const Meme = () =>{
 
@@ -12,9 +13,10 @@ useEffect(() => {
   }))
 });
   return(
-  memes.length ? <div>
-    <button>Skip</button>
-    <img src={memes[0].url}/> 
+  memes.length ? 
+  <div className={styles.container}>
+    <button onClick={() => console.log('click!')} className={styles.skip}>Skip</button>
+    <img src={memes[0].url} alt='meme'/> 
   </div>: 
   <></>);
 };
