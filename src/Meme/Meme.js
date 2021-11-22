@@ -5,6 +5,7 @@ export const Meme = () =>{
 
   const [memes, setMemes] = useState([])
   const [memeIndex, setMemeIndex ] = useState(0);
+  const [captions, setCaptions ] = useState([]);
 
   // this function shuffles the order that the memes appear in
   const shuffleMemes = (array) => {
@@ -15,7 +16,7 @@ export const Meme = () =>{
       array[j] = temp;
     }
   };
-
+// fetch the api to gather the memes
   useEffect(() => {
     fetch('https://api.imgflip.com/get_memes').then(res => {
       res.json().then(res => {
@@ -25,6 +26,17 @@ export const Meme = () =>{
       });
     });
   }, []);
+
+  useEffect(() => {
+    if(memes.length){
+      setCaptions(Array(memes[memeIndex].box_count).fill(''));
+    }
+  }, [memeIndex, memes]);
+
+  useEffect(() =>{
+    console.log(captions)
+  },[captions])
+
   return(
   memes.length ? 
   <div className={styles.container}>
@@ -32,6 +44,11 @@ export const Meme = () =>{
     <button onClick={() => console.log('generate')} className={styles.generate}>Generate</button>
     {/* skip to another meme */}
     <button onClick={() => setMemeIndex(memeIndex + 1)} className={styles.skip}>Skip</button>
+    {
+      captions.map((c, index) =>(
+        <input key ={index}/>
+      ))
+    }
     <img src={memes[memeIndex].url} alt='meme'/> 
   </div>: 
   <></>);
