@@ -7,6 +7,21 @@ export const Meme = () =>{
   const [memeIndex, setMemeIndex ] = useState(0);
   const [captions, setCaptions ] = useState([]);
 
+  // this function updates the captions
+  const updateCaption = (e, index) => {
+    const text =e.target.value || '';
+    setCaptions(
+      captions.map((c, i) => {
+        if(index === i){
+          return text;
+        } else{
+          return c;
+
+        }
+      })
+    )
+  }
+
   // this function shuffles the order that the memes appear in
   const shuffleMemes = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -46,7 +61,7 @@ export const Meme = () =>{
     <button onClick={() => setMemeIndex(memeIndex + 1)} className={styles.skip}>Skip</button>
     {
       captions.map((c, index) =>(
-        <input key ={index}/>
+        <input onChange = {(e)=> updateCaption(e, index)} key ={index}/>
       ))
     }
     <img src={memes[memeIndex].url} alt='meme'/> 
