@@ -22,6 +22,29 @@ export const Meme = () =>{
     )
   }
 
+  const generateMeme = () =>{
+    const currentMeme = memes[memeIndex];
+    // form data object
+    const formData = new FormData();
+    // append username
+    formData.append('username', 'duncanbyrne' );
+    // password
+    formData.append('password', 'Password123');
+    // template id
+    formData.append('template_id', currentMeme.id);
+    // loop through captions to set a value for each
+    captions.forEach((c, index) => formData.append(`boxes[${index}][text]`, c));
+    // fetch api
+    fetch('https://api.imgflip.com/caption_image',{
+      method: 'POST',
+      body: formData
+    }).then(res => {
+      res.json().then(res => {
+        console.log(res)
+      })
+    })
+  }
+
   // this function shuffles the order that the memes appear in
   const shuffleMemes = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -48,15 +71,15 @@ export const Meme = () =>{
     }
   }, [memeIndex, memes]);
 
-  useEffect(() =>{
-    console.log(captions)
-  },[captions])
+  // useEffect(() =>{
+  //   console.log(captions)
+  // },[captions])
 
   return(
   memes.length ? 
   <div className={styles.container}>
     {/* generate button */}
-    <button onClick={() => console.log('generate')} className={styles.generate}>Generate</button>
+    <button onClick={generateMeme} className={styles.generate}>Generate</button>
     {/* skip to another meme */}
     <button onClick={() => setMemeIndex(memeIndex + 1)} className={styles.skip}>Skip</button>
     {
